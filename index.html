@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La IA desafia los limites de las matematicas</title>
+  <style>
+    :root {
+      --ink: #161412;
+      --muted: #5e5951;
+      --soft: #837b70;
+      --paper: #f5f0e6;
+      --paper-deep: #ebe2d3;
+      --rule: #2d2924;
+      --accent: #8b1e1e;
+      --accent-dark: #541414;
+      --gold: #b89045;
+      --blue: #244f68;
+      --green: #355f52;
+      --shadow: rgba(31, 27, 23, 0.14);
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(184, 144, 69, 0.14), transparent 28rem),
+        linear-gradient(180deg, #fbf7ef 0%, var(--paper) 38%, #efe6d8 100%);
+      font-family: Georgia, "Times New Roman", Times, serif;
+      line-height: 1.55;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.28;
+      background-image:
+        linear-gradient(rgba(22, 20, 18, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(22, 20, 18, 0.025) 1px, transparent 1px);
+      background-size: 5px 5px;
+      mix-blend-mode: multiply;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: min(calc(100% - 28px), var(--max));
+      margin: 0 auto;
+      padding: 20px 0 48px;
+    }
+
+    .masthead {
+      border-bottom: 2px solid var(--rule);
+      padding: 8px 0 14px;
+      animation: fadeDown 700ms ease both;
+    }
+
+    .utility {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-top: 1px solid rgba(45, 41, 36, 0.45);
+      border-bottom: 1px solid rgba(45, 41, 36, 0.45);
+      padding: 8px 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 18px;
+      padding: 18px 0 12px;
+    }
+
+    .brand::before,
+    .brand::after {
+      content: "";
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rule));
+    }
+
+    .brand::after {
+      background: linear-gradient(90deg, var(--rule), transparent);
+    }
+
+    .brand-title {
+      margin: 0;
+      text-align: center;
+      font-size: clamp(2.1rem, 8vw, 5.8rem);
+      line-height: 0.9;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .brand-subtitle {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      padding-top: 9px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav a {
+      position: relative;
+      white-space: nowrap;
+      padding-bottom: 4px;
+    }
+
+    .nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 220ms ease;
+    }
+
+    .nav a:hover::after {
+      transform: scaleX(1);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.55fr);
+      gap: 28px;
+      border-bottom: 1px solid var(--rule);
+      padding: 28px 0 24px;
+    }
+
+    .lead {
+      animation: rise 700ms 120ms ease both;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      color: var(--accent-dark);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .kicker::before {
+      content: "";
+      width: 34px;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 970px;
+      font-size: clamp(3rem, 8vw, 8.1rem);
+      line-height: 0.86;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      text-wrap: balance;
+    }
+
+    .dek {
+      max-width: 900px;
+      margin: 18px 0 0;
+      color: #34302b;
+      font-size: clamp(1.08rem, 2vw, 1.45rem);
+      line-height: 1.36;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 20px;
+      margin-top: 22px;
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .visual-panel {
+      border-left: 1px solid rgba(45, 41, 36, 0.45);
+      padding-left: 24px;
+      animation: fadeIn 900ms 260ms ease both;
+    }
+
+    .diagram {
+      min-height: 300px;
+      border-top: 4px double var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 18px 0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .vortex {
+      width: min(100%, 330px);
+      aspect-ratio: 1;
+      position: relative;
+      display: grid;
+      place-items: center;
+      filter: drop-shadow(0 14px 20px var(--shadow));
+    }
+
+    .ring {
+      position: absolute;
+      border: 1px solid rgba(36, 79, 104, 0.65);
+      border-top-color: rgba(139, 30, 30, 0.82);
+      border-radius: 50%;
+      transform: rotate(var(--rot));
+      animation: spin var(--speed) linear infinite;
+    }
+
+    .ring:nth-child(1) { inset: 5%; --rot: 8deg; --speed: 18s; }
+    .ring:nth-child(2) { inset: 17%; --rot: -18deg; --speed: 13s; }
+    .ring:nth-child(3) { inset: 29%; --rot: 31deg; --speed: 9s; }
+    .ring:nth-child(4) { inset: 41%; --rot: -7deg; --speed: 6s; }
+
+    .axis {
+      width: 2px;
+      height: 76%;
+      background: linear-gradient(transparent, rgba(139, 30, 30, 0.8), transparent);
+      transform: rotate(18deg);
+    }
+
+    .diagram-caption {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.35;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-bottom: 1px solid var(--rule);
+      animation: rise 700ms 280ms ease both;
+    }
+
+    .stat {
+      min-height: 126px;
+      padding: 18px 18px 16px;
+      border-right: 1px solid rgba(45, 41, 36, 0.48);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .stat:last-child {
+      border-right: 0;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: clamp(1.7rem, 4vw, 3.3rem);
+      line-height: 0.92;
+      color: var(--accent-dark);
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 36px;
+      padding-top: 28px;
+    }
+
+    .article {
+      columns: 2 280px;
+      column-gap: 34px;
+      animation: fadeIn 900ms 420ms ease both;
+    }
+
+    .article p {
+      margin: 0 0 1.05rem;
+      font-size: 1.06rem;
+    }
+
+    .article p:first-child::first-letter {
+      float: left;
+      padding: 0 8px 0 0;
+      font-size: 4.65rem;
+      line-height: 0.75;
+      color: var(--accent-dark);
+      font-weight: 700;
+    }
+
+    blockquote {
+      break-inside: avoid;
+      margin: 26px 0;
+      padding: 18px 0 18px 18px;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      border-left: 4px solid var(--accent);
+      color: #24211e;
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      line-height: 1.16;
+    }
+
+    .side {
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+
+    .brief {
+      border-top: 3px double var(--rule);
+      padding: 16px 0 0;
+      animation: fadeIn 900ms 520ms ease both;
+    }
+
+    .brief h2 {
+      margin: 0 0 8px;
+      font-size: 1.32rem;
+      line-height: 1.05;
+    }
+
+    .brief p {
+      margin: 0;
+      color: #3b3630;
+      font-size: 0.98rem;
+    }
+
+    .brief.accent {
+      border-top-color: var(--accent);
+    }
+
+    .timeline {
+      margin-top: 4px;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 12px 0;
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .footer-note {
+      margin-top: 34px;
+      border-top: 1px solid var(--rule);
+      padding-top: 14px;
+      color: var(--muted);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 5;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--rule);
+      border-radius: 50%;
+      background: rgba(245, 240, 230, 0.9);
+      color: var(--ink);
+      font-size: 1.2rem;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 220ms ease, transform 220ms ease, background 220ms ease;
+      box-shadow: 0 8px 22px var(--shadow);
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .back-to-top:hover {
+      background: #fffaf0;
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(calc(var(--rot) + 360deg)); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 1ms !important;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .page {
+        width: min(calc(100% - 22px), var(--max));
+        padding-top: 12px;
+      }
+
+      .utility {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .brand {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .brand::before,
+      .brand::after {
+        display: none;
+      }
+
+      .hero,
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .visual-panel {
+        border-left: 0;
+        border-top: 1px solid rgba(45, 41, 36, 0.45);
+        padding: 18px 0 0;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .stat {
+        min-height: 98px;
+        border-right: 0;
+        border-bottom: 1px solid rgba(45, 41, 36, 0.48);
+      }
+
+      .stat:last-child {
+        border-bottom: 0;
+      }
+
+      .article {
+        columns: auto;
+      }
+
+      .side {
+        border-top: 1px solid var(--rule);
+        padding-top: 18px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      h1 {
+        font-size: clamp(2.65rem, 15vw, 4.4rem);
+      }
+
+      .dek {
+        font-size: 1.02rem;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
+
+      .diagram {
+        min-height: 240px;
+      }
+
+      .article p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <header class="masthead">
+      <div class="utility" aria-label="Datos de edicion">
+        <span>Viernes, 11 de septiembre de 2026</span>
+        <span>Ciencia &amp; Tecnologia</span>
+        <span>Edicion digital internacional</span>
+      </div>
+      <div class="brand" aria-label="Cabecera del periodico">
+        <div>
+          <h2 class="brand-title">El Observador Analitico</h2>
+          <p class="brand-subtitle">Periodismo de ciencia, tecnologia y poder</p>
+        </div>
+      </div>
+      <nav class="nav" aria-label="Secciones">
+        <a href="#noticia">Portada</a>
+        <a href="#navier">Navier-Stokes</a>
+        <a href="#cautela">La cautela matematica</a>
+        <a href="#contexto">Contexto</a>
+        <a href="#fuentes">Fuentes</a>
+      </nav>
+    </header>
+
+    <section class="hero" aria-labelledby="headline">
+      <article class="lead">
+        <div class="kicker">Ultima hora cientifica</div>
+        <h1 id="headline">LA IA DESAFIA LOS LIMITES DE LAS MATEMATICAS</h1>
+        <p class="dek">
+          OpenAI presenta una posible solucion al problema de Navier-Stokes, uno de los siete Problemas del Milenio. El resultado podria convertirse en uno de los mayores hitos cientificos de la inteligencia artificial, aunque todavia enfrenta el escrutinio de la comunidad matematica.
+        </p>
+        <div class="meta-row">
+          <span>Por Redaccion Ciencia</span>
+          <span>Anuncio: 8 de septiembre de 2026</span>
+          <span>Estado: pendiente de verificacion independiente</span>
+        </div>
+      </article>
+
+      <aside class="visual-panel" aria-label="Ilustracion editorial de vortice">
+        <div class="diagram">
+          <div class="vortex" aria-hidden="true">
+            <span class="ring"></span>
+            <span class="ring"></span>
+            <span class="ring"></span>
+            <span class="ring"></span>
+            <span class="axis"></span>
+          </div>
+        </div>
+        <p class="diagram-caption">
+          Una representacion editorial del remolino matematico: el tipo de dinamica que, segun el anuncio, podria concentrar energia y velocidad hasta producir una singularidad.
+        </p>
+      </aside>
+    </section>
+
+    <section class="stats" aria-label="Destacados">
+      <div class="stat">
+        <strong>10.000</strong>
+        <span>agentes de IA</span>
+      </div>
+      <div class="stat">
+        <strong>88</strong>
+        <span>horas de trabajo</span>
+      </div>
+      <div class="stat">
+        <strong>165</strong>
+        <span>paginas de demostracion</span>
+      </div>
+    </section>
+
+    <section class="content" id="noticia">
+      <article class="article">
+        <p>
+          OpenAI anuncio el 8 de septiembre de 2026 que uno de sus sistemas internos de inteligencia artificial habia producido una posible solucion al problema de existencia y suavidad de Navier-Stokes, una de las preguntas mas famosas de la matematica moderna. La afirmacion apunta a un escenario en el que una solucion inicialmente suave podria desarrollar una singularidad en tiempo finito.
+        </p>
+        <p>
+          La compania publico una demostracion extensa y una formalizacion en Lean, una herramienta usada para verificar pruebas matematicas con precision logica. Aun asi, el lenguaje responsable exige cautela: una prueba de esta magnitud debe pasar por revision independiente, debate especializado y validacion de la comunidad matematica antes de considerarse oficialmente aceptada.
+        </p>
+        <p>
+          El problema forma parte de los siete Problemas del Milenio propuestos por el Clay Mathematics Institute. Resolverlo no consiste en mejorar una simulacion ni en calcular mejor el movimiento de un fluido, sino en establecer una verdad general sobre las ecuaciones que describen liquidos y gases en tres dimensiones.
+        </p>
+        <blockquote>
+          Una prueba puede ser formal y aun asi necesitar lectura humana: en matematicas, el reconocimiento no llega por velocidad, sino por escrutinio.
+        </blockquote>
+        <p>
+          Segun el anuncio, el esfuerzo involucraria una arquitectura de miles de agentes coordinados, con etapas de exploracion, consolidacion de hallazgos y verificacion posterior. Ese metodo desplaza la noticia mas alla de una pregunta puramente matematica: tambien la convierte en un ensayo publico sobre como podria producirse conocimiento cientifico con sistemas de IA avanzados.
+        </p>
+        <p>
+          De confirmarse, el episodio marcaria un antes y un despues en la relacion entre inteligencia artificial y ciencia teorica. Si no se confirma, seguira siendo un caso relevante sobre los limites, riesgos y promesas de automatizar partes del descubrimiento matematico.
+        </p>
+      </article>
+
+      <aside class="side">
+        <section class="brief" id="navier">
+          <h2>Que significa Navier-Stokes</h2>
+          <p>
+            Las ecuaciones de Navier-Stokes describen el movimiento de fluidos como el aire y el agua. La pregunta del Milenio busca saber si, bajo ciertas condiciones, sus soluciones siempre siguen siendo suaves o si pueden romperse mediante una singularidad.
+          </p>
+        </section>
+
+        <section class="brief accent" id="cautela">
+          <h2>La cautela matematica</h2>
+          <p>
+            El anuncio no equivale por si solo a reconocimiento oficial. El Clay Mathematics Institute y la comunidad especializada deben evaluar la prueba, sus supuestos y su alcance antes de tratar el problema como resuelto.
+          </p>
+        </section>
+
+        <section class="brief" id="contexto">
+          <h2>Por que importa</h2>
+          <p>
+            El caso combina tres planos: una conjetura central sobre fluidos, una prueba asistida por herramientas formales y una demostracion de capacidad de sistemas de IA aplicados a investigacion abstracta.
+          </p>
+          <div class="timeline">Anuncio publico: 8 sep. 2026 · Revision: en curso</div>
+        </section>
+      </aside>
+    </section>
+
+    <footer class="footer-note" id="fuentes">
+      Esta portada es una pieza editorial original inspirada en el lenguaje clasico de los grandes diarios, sin copiar la identidad visual de ninguno. Redaccion basada en el anuncio de OpenAI y en la precaucion periodistica de presentar el resultado como posible solucion pendiente de verificacion independiente.
+    </footer>
+  </main>
+
+  <button class="back-to-top" type="button" aria-label="Volver arriba">↑</button>
+
+  <script>
+    const topButton = document.querySelector(".back-to-top");
+
+    function updateTopButton() {
+      topButton.classList.toggle("visible", window.scrollY > 420);
+    }
+
+    window.addEventListener("scroll", updateTopButton, { passive: true });
+    topButton.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.style.transform = "translateY(0)";
+          entry.target.style.opacity = "1";
+        }
+      });
+    }, { threshold: 0.16 });
+
+    document.querySelectorAll(".brief").forEach((item) => {
+      item.style.opacity = "0";
+      item.style.transform = "translateY(14px)";
+      item.style.transition = "opacity 520ms ease, transform 520ms ease";
+      observer.observe(item);
+    });
+  </script>
+</body>
+</html
