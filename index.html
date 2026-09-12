@@ -268,6 +268,28 @@
       transform: rotate(18deg);
     }
 
+    .portrait-card {
+      margin: 16px 0 0;
+      border-top: 1px solid var(--rule);
+      padding-top: 14px;
+    }
+
+    .portrait-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: sepia(28%) contrast(1.05);
+      border: 1px solid var(--rule);
+    }
+
+    .portrait-card figcaption {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.35;
+      font-style: italic;
+    }
+
     .diagram-caption {
       margin: 12px 0 0;
       color: var(--muted);
@@ -588,6 +610,17 @@
             <span class="axis"></span>
           </div>
         </div>
+
+        <figure class="portrait-card">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/5/50/Claude-Louis_Navier.jpg"
+            alt="Retrato de Claude-Louis Navier"
+          />
+          <figcaption>
+            Claude-Louis Navier, matemático e ingeniero cuya ecuación da nombre al problema central del artículo.
+          </figcaption>
+        </figure>
+
         <p class="diagram-caption">
           Una representacion editorial del remolino matematico: el tipo de dinamica que, segun el anuncio, podria concentrar energia y velocidad hasta producir una singularidad.
         </p>
